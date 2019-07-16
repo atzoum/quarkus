@@ -136,6 +136,27 @@ public class FastBootMetadataBuilder {
 
         this.providedServices = ssrBuilder.getProvidedServices();
 
+        /**
+         * This is required to solve the Hibernate Envers integration problem (jvm-mode only).
+         * 
+         * The EnversService requires multiple steps to be properly built, the most important ones are:
+         *
+         * 1. The EnversServiceContributor contributes the EnversServiceInitiator to the RecordableBootstrap.
+         * 2. After RecordableBootstrap builds a StandardServiceRegistry, the first time the EnversService is
+         * requested, it is created by the initiator and configured by the registry.
+         * 3. The MetadataBuildingProcess completes by calling the AdditionalJaxbMappingProducer which
+         * initializes the EnversService and produces some additional mapping documents.
+         * 4. After that point the EnversService appears to be fully functional.
+         *
+         * The following trick uses the aforementioned steps to setup the EnversService and then turns it into
+         * a ProvidedService so that it is not necessary to repeat all these complex steps during the reactivation
+         * of the destroyed service registry in PreconfiguredServiceRegistryBuilder.
+         * 
+         */
+        ssrBuilder.getPostBuildProvidedServices().stream()
+                .map(sr -> new ProvidedService(sr, standardServiceRegistry.getService(sr)))
+                .forEach(providedServices::add);
+
         final MetadataSources metadataSources = new MetadataSources(bsr);
         addPUManagedClassNamesToMetadataSources(persistenceUnit, metadataSources);
 
