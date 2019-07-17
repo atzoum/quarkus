@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bootstrap-parent</artifactId>
-        <version>0.19.1</version>
+        <version>0.19.1-envers.0</version>
         <relativePath>../</relativePath>
     </parent>
     <artifactId>quarkus-bootstrap-maven-plugin</artifactId>
