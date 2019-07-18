@@ -13,7 +13,7 @@
     <artifactId>arc-parent</artifactId>
     <name>ArC - Parent pom</name>
     <packaging>pom</packaging>
-    <version>0.19.1-envers.0</version>
+    <version>0.19.1-envers.1</version>
 
     <licenses>
         <license>
