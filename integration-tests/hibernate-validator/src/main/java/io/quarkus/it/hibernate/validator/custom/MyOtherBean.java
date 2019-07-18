@@ -1,6 +1,7 @@
 package io.quarkus.it.hibernate.validator.custom;
 
 @MyCustomConstraint
+@MyCustomCdiConstraint
 public class MyOtherBean {
 
     private String name;
